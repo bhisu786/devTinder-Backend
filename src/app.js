@@ -1,29 +1,18 @@
 const express =  require('express');
-
+const  connectDB  = require("./config/database");
 const app = express();
 
 
 
-// request Handler
-app.use("/",(req,res)=> {
-   res.send("HomePage ");
-});
 
-app.use("/test",(req,res)=> {
-    res.send("Hello from the test ");
- });
- 
-
- app.use("/hello",(req,res)=> {
-    res.send("Hello from the Server");
- });
-
- 
- app.use("/",(req,res)=> {
-    res.send("Hello from the Server");
- });
- 
-
-app.listen(3000,()=>{
-    console.log("Server connected ");
-});
+connectDB()
+   .then(()=>{
+    console.log("DB Connected Successfully....❤️ ");
+    app.listen(3000,()=>{
+      console.log("Server connected ");
+  });
+  
+})
+   .catch(err=>{
+    console.log("DB Connection Failed...????")
+   })
