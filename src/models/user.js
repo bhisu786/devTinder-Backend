@@ -4,26 +4,34 @@ const userSchema =  mongoose.Schema({
  
      
   firstName:{
-    type:String
+    type: String
   },
   lastName:{
-    type:string
+    type:String
   },
   emailId:{
-    type:string
+    type:String
   },
   password:{
-    type:string
+    type:String
   },
   age:{
     type:Number
   },
   gender:{
-    type:string
+    type:String
   }
 
 });
 
-const  userModel  = mongoose.model("user",userSchema);
+//const  userModel  = mongoose.model("user",userSchema);
 
-module.exports =userModel;
+
+//const User =  mongoose.model("User",userSchema);
+
+
+//module.exports = userModel;
+
+// or some programmers also use this method
+
+ module.exports = mongoose.model("User",userSchema);
