@@ -4,14 +4,12 @@ const app = express();
 const User = require("./models/user");
 
 
-//------- first  api
-
-
+//------- first  api-
 app.use(express.json());
 
 app.post("/signup",async(req,res)=>{
 
- // console.log(req.body);
+  //console.log(req.body);
  const user = new User(req.body);
 
 // const userObj = {
@@ -22,9 +20,7 @@ app.post("/signup",async(req,res)=>{
 // };
  
 //  creating the instance of the user model
-// const user = new User(userObj);
-
-
+ // const user = new User(userObj);
 try{
   // this will return a promise and this save the data to the database
   await user.save();
@@ -80,7 +76,6 @@ app.get("/user",async(req,res)=>{
 
 app.delete("/user",async(req,res)=>{
   const userId =  req.body.userId;
-  
 
   try{
     const user =  await User.findByIdAndDelete({_id:userId});
@@ -115,11 +110,24 @@ app.patch ("/user",async(req,res)=>{
 });
 
 
+app.patch("/user",async(req,res) =>{ 
+   const userId = req.body.userId;
+   const data =  req.body;
 
-
-
-
-
+   const ALLOWED_UPDATES =[
+    "photoUrl","about","gender","age"
+   ]
+   try {
+    const user = await User.findByIdAndDelete({_id:userId},data, {
+      returnDocument:"after",
+      runValidators:true,
+    });
+    console.log(user);
+    res.send("User Update suceessfully");
+   }catch(err){
+    res.status(400).send("UPDATE FAILED" + err.message);
+   }
+});
 
 //------------------------
 connectDB()
