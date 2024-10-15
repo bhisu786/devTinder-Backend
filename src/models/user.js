@@ -1,8 +1,11 @@
 const mongoose =  require("mongoose");
+const validator = require("validator");
+
+
+
 
 const userSchema =  mongoose.Schema({
- const validator = require("validator");
-    
+ 
   firstName:{
     type: String,
     required:true,
@@ -21,7 +24,6 @@ const userSchema =  mongoose.Schema({
         throw new Error("invalid Email Address :" + value);
       }
     } ,
-
   },
   password:{
     type:String,
@@ -39,16 +41,16 @@ const userSchema =  mongoose.Schema({
       }
     }
   },
-  photoUrl:{
-    type:String,
-    default:"",
-    validate(value){
-      if(!validator.isURL(value)){
-        throw new Error("invalid url Address :" + value);
-      }
-    } ,
+  // photoUrl:{
+  //   type:String,
+  //   default:"",
+  //   validate(value){
+  //     if(!validator.isURL(value)){
+  //       throw new Error("invalid url Address :" + value);
+  //     }
+  //   } ,
 
-  },
+  // },
   about:{
     type:String,
     default:"This is the default about the user",
