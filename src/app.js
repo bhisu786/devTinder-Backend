@@ -4,10 +4,13 @@ const app = express();
 const User = require("./models/user");
 const {validateSignUpData} =  require("./utlis/validation");
 const bcrypt = require("bcrypt");
+const cookieParser = require('cookie-parser');
+const jwt = require("jsonwebtoken");
 
 
 //------- first  api-
 app.use(express.json());
+app.use(cookieParser());
 
 app.post("/signup",async(req,res)=>{
 try{
@@ -56,6 +59,20 @@ app.post("/login",async(req,res)=>{
   const  isPasswordValid =  await bcrypt.compare(password,user.password);
 
   if(isPasswordValid){
+  
+    
+   //validate my token 
+ const token = await jwt.sign({_id:user._id},"Bhisu@#&786");
+ console.log(token);
+   
+
+
+
+
+    // Add the token to the cookies and send the response back to the user
+    res.cookie("token",token);
+
+
     res.send("login Successfull!!!!!!!");
   }else{
     throw new Error("Invalid credentials");
@@ -66,6 +83,27 @@ app.post("/login",async(req,res)=>{
     res.status(400).send("ERROR"+err.message); 
   }
 });
+
+
+app.get("/profile",async(req,res)=>{
+  
+  const cookie = req.cookies;
+  
+const {token}= cookie;
+// validate my token
+
+  const decodedMessage =  await jwt.verify(token,"Bhisu@#&786");
+
+  console.log(decodedMessage);
+  const {_id} =decodedMessage;
+  console.log("Logged In User is :" + _id);
+ 
+  const user =await User.findById(_id);
+ 
+  // console.log(cookie);
+  res.send(user);
+});
+
 
 
 // //GET THE USER BY Gmail
